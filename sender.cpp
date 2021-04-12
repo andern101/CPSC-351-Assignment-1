@@ -105,13 +105,15 @@ void send(const char* fileName)
  		 */
 		sndMsg.mesg_type = SENDER_DATA_TYPE;
 		//Maybe sndMsg.mtype = SENDER_DATA_TYPE; not sure which
-		msgsnd(msgid, sndMsg, sizeof(sndMsg), 0);
-		//maybe msgsnd(msgid, sndMsg, sndMsg.size, 0);
+		
+		msgsnd(msgid, sndMsg, sndMsg.size, 0);
+		//Maybe msgsnd(msgid, sndMsg, sizeof(sndMsg), 0);
 		
 		
 		/* TODO: Wait until the receiver sends us a message of type RECV_DONE_TYPE telling us 
  		 * that he finished saving the memory chunk. 
  		 */
+		
 		if(msgrcv(msgid, &message, sizeof(message), RECV_DONE_TYPE, 0))<0
 		{
 			perror("msgrcv");
@@ -127,7 +129,11 @@ void send(const char* fileName)
  	  * Lets tell the receiver that we have nothing more to send. We will do this by
  	  * sending a message of type SENDER_DATA_TYPE with size field set to 0. 	
 	  */
-
+	
+	//sndMsg.mesg_type = SENDER_DATA_TYPE; Not Sure if Needed
+	//sndMsg.size = 0; Not Sure if Needed
+	msgsnd(msgid, sndMsg, 0, 0);
+	
 		
 	/* Close the file */
 	fclose(fp);
