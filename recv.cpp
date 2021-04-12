@@ -155,6 +155,8 @@ int main(int argc, char** argv)
  	 * queues and shared memory before exiting. You may add the cleaning functionality
  	 * in ctrlCSignal().
  	 */
+	signal(SIGINT, ctrlCSignal);); 
+
 				
 	/* Initialize */
 	init(shmid, msqid, sharedMemPtr);
