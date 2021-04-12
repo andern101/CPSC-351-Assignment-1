@@ -39,11 +39,15 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
         key = ftok(keyfile.txt, 'a')
 
 	/* TODO: Get the id of the shared memory segment. The size of the segment must be SHARED_MEMORY_CHUNK_SIZE */
-	shmid = shmget(key, SHARED_MEMORY_CHUNK_SIZE, 0660 | IPC_CREAT))
+	shmid = shmget(key, SHARED_MEMORY_CHUNK_SIZE, 0666 | IPC_CREAT))
 		
 	/* TODO: Attach to the shared memory */
+	sharedMemPtr = shmat(shmid,(void*)0,0);
+		
 	/* TODO: Attach to the message queue */
 	/* Store the IDs and the pointer to the shared memory region in the corresponding parameters */
+	msgid = msgget(key, 0666 | IPC_CREAT);
+
 	
 }
 
@@ -57,6 +61,7 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
 void cleanUp(const int& shmid, const int& msqid, void* sharedMemPtr)
 {
 	/* TODO: Detach from shared memory */
+	shmdt(sharedMemPtr);
 }
 
 /**
