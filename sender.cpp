@@ -105,10 +105,21 @@ void send(const char* fileName)
  		 */
 		sndMsg.mesg_type = SENDER_DATA_TYPE;
 		//Maybe sndMsg.mtype = SENDER_DATA_TYPE; not sure which
+		msgsnd(msgid, sndMsg, sizeof(sndMsg), 0);
+		//maybe msgsnd(msgid, sndMsg, sndMsg.size, 0);
+		
 		
 		/* TODO: Wait until the receiver sends us a message of type RECV_DONE_TYPE telling us 
  		 * that he finished saving the memory chunk. 
  		 */
+		if(msgrcv(msgid, &message, sizeof(message), RECV_DONE_TYPE, 0))<0
+		{
+			perror("msgrcv");
+			exit(-1);
+		}else
+			printf("Reciever received message.\n");
+		
+			
 	}
 	
 
