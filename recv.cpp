@@ -127,10 +127,13 @@ void mainLoop()
 void cleanUp(const int& shmid, const int& msqid, void* sharedMemPtr)
 {
 	/* TODO: Detach from shared memory */
+	shmdt(sharedMemPtr);
 	
 	/* TODO: Deallocate the shared memory chunk */
+	shmctl(shmid,IPC_RMID,NULL);
 	
 	/* TODO: Deallocate the message queue */
+	msgctl(msgid, IPC_RMID, NULL);
 }
 
 /**
