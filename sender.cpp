@@ -35,8 +35,7 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
 		    may have the same key.
 	 */
 	
-	key_t key;
-        key = ftok(keyfile.txt, 'a')
+	key_t key = ftok(keyfile.txt, 'a')
 
 	/* TODO: Get the id of the shared memory segment. The size of the segment must be SHARED_MEMORY_CHUNK_SIZE */
 	shmid = shmget(key, SHARED_MEMORY_CHUNK_SIZE, 0666 | IPC_CREAT))
