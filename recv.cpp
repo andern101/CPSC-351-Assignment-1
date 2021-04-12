@@ -39,11 +39,14 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
 		    for any System V object (i.e. message queues, shared memory, and sempahores) 
 		    is unique system-wide among all System V objects. Two objects, on the other hand,
 		    may have the same key.
-	 */
-	
+	 */	
+	key_t key;
+	key = ftok(keyfile.txt, 'a');
 
 	
 	/* TODO: Allocate a piece of shared memory. The size of the segment must be SHARED_MEMORY_CHUNK_SIZE. */
+	shmid = shmget(key,SHARED_MEMORY_CHUNK_SIZE,0666|IPC_CREAT);
+	
 	/* TODO: Attach to the shared memory */
 	/* TODO: Create a message queue */
 	/* Store the IDs and the pointer to the shared memory region in the corresponding parameters */
