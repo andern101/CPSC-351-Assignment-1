@@ -84,7 +84,16 @@ void mainLoop()
      * NOTE: the received file will always be saved into the file called
      * "recvfile"
      */
-	msgrcv(msqid, &message, sizeof(message), 1, 0);
+	msgrcv(msqid, recvfile, recvfile.size, SENDER_DATA_TYPE, 0);
+	if(recvfile.size != 0)
+	{
+		recvfile.size = sizeof(sharedMemPtr);
+	}
+	else
+	{
+		perror("msgrcv");
+		exit(-1);
+	}
 
 
 	/* Keep receiving until the sender set the size to 0, indicating that
@@ -106,7 +115,7 @@ void mainLoop()
  			 * I.e. send a message of type RECV_DONE_TYPE (the value of size field
  			 * does not matter in this case). 
  			 */
-			
+			msgsnd(msqid, recvfile, recvfile.size, 0);
 		}
 		/* We are done */
 		else
