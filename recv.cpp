@@ -52,7 +52,7 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
 	
 	/* TODO: Create a message queue */
 	/* Store the IDs and the pointer to the shared memory region in the corresponding parameters */
-	msgid = msgget(key, 0666 | IPC_CREAT);
+	msqid = msgget(key, 0666 | IPC_CREAT);
 }
  
 
@@ -84,6 +84,8 @@ void mainLoop()
      * NOTE: the received file will always be saved into the file called
      * "recvfile"
      */
+	msgrcv(msqid, &message, sizeof(message), 1, 0);
+
 
 	/* Keep receiving until the sender set the size to 0, indicating that
  	 * there is no more data to send
@@ -104,6 +106,7 @@ void mainLoop()
  			 * I.e. send a message of type RECV_DONE_TYPE (the value of size field
  			 * does not matter in this case). 
  			 */
+			
 		}
 		/* We are done */
 		else
@@ -132,7 +135,7 @@ void cleanUp(const int& shmid, const int& msqid, void* sharedMemPtr)
 	shmctl(shmid,IPC_RMID,NULL);
 	
 	/* TODO: Deallocate the message queue */
-	msgctl(msgid, IPC_RMID, NULL);
+	msgctl(msqid, IPC_RMID, NULL);
 }
 
 /**
