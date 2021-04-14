@@ -45,7 +45,7 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
 		
 	/* TODO: Attach to the message queue */
 	/* Store the IDs and the pointer to the shared memory region in the corresponding parameters */
-	msgid = msgget(key, 0666 | IPC_CREAT);
+	msqid = msgget(key, 0666 | IPC_CREAT);
 
 	
 }
@@ -104,14 +104,14 @@ void send(const char* fileName)
  		 * (message of type SENDER_DATA_TYPE) 
  		 */
 		sndMsg.mtype = SENDER_DATA_TYPE;		
-		msgsnd(msgid, sndMsg, sndMsg.size, 0);
+		msgsnd(msqid, sndMsg, sndMsg.size, 0);
 		
 		
 		/* TODO: Wait until the receiver sends us a message of type RECV_DONE_TYPE telling us 
  		 * that he finished saving the memory chunk. 
  		 */
 		
-		if(msgrcv(msgid, recMsg, recMsg.size, RECV_DONE_TYPE, 0))<0
+		if(msgrcv(msqid, recMsg, recMsg.size, RECV_DONE_TYPE, 0))<0
 		{
 			perror("msgrcv");
 			exit(-1);
@@ -129,7 +129,7 @@ void send(const char* fileName)
 	
 	//sndMsg.mesg_type = SENDER_DATA_TYPE; Not Sure if Needed
 	//sndMsg.size = 0; Not Sure if Needed
-	msgsnd(msgid, sndMsg, 0, 0);
+	msgsnd(msqid, sndMsg, 0, 0);
 	
 		
 	/* Close the file */
