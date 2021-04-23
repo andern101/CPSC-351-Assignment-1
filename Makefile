@@ -8,8 +8,7 @@ recv:
 sender:
 	g++ -o sender sender.cpp
 
-recv.o: recv.cpp g++ -c recv.cpp
-
 
 clean:
 	rm -f sender recv a.out core.*
+
